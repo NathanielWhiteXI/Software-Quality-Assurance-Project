@@ -43,3 +43,19 @@ banking-system/
 ├── scripts/
 │   ├── run_all.sh
 │   └── check_all.sh
+
+## Architecture
+The system follows a FrontEnd / BackEnd separation.
+
+- FrontEnd handles:
+  - User interaction
+  - Input validation
+  - Transaction file generation
+
+- BackEnd handles:
+  - Batch processing
+  - Constraint enforcement
+  - Persistent data updates
+
+## Data Flow
+User → FrontEnd → Transaction File → BackEnd → Updated Master File
