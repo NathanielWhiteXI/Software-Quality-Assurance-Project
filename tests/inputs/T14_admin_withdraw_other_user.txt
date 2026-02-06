@@ -1,0 +1,7 @@
+login
+admin
+withdrawal
+Jane Smith
+00010
+400
+logout

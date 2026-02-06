@@ -1,0 +1,7 @@
+withdrawal
+00001
+100
+login
+standard
+John Doe
+logout

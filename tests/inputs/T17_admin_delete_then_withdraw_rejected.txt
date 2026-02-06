@@ -1,0 +1,10 @@
+login
+admin
+delete
+Jane Smith
+00010
+withdrawal
+Jane Smith
+00010
+10
+logout

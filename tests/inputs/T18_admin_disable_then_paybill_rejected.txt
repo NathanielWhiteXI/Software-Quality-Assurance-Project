@@ -1,0 +1,11 @@
+login
+admin
+disable
+Admin Target
+00020
+paybill
+Admin Target
+00020
+EC
+10
+logout

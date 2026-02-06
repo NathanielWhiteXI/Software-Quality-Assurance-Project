@@ -1,0 +1,6 @@
+00001 John Doe             A 01000.00
+00002 John Doe             A 00050.00
+00010 Jane Smith           A 02000.00
+00011 Jane Smith           D 00100.00
+00020 Admin Target         A 00500.00
+00000 END_OF_FILE          A 00000.00

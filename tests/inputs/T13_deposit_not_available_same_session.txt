@@ -1,0 +1,10 @@
+login
+standard
+John Doe
+deposit
+00002
+1000
+withdrawal
+00002
+900
+logout
