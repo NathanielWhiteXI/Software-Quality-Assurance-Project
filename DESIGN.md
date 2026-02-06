@@ -3,9 +3,8 @@ banking-system/
 ├── README.md
 ├── DESIGN.md
 ├── .gitignore
-│
-├── uml/
-│   └── banking_system.puml
+├── UML Diagram.drawio
+├── UML Diagram.png
 │
 ├── src/
 │   ├── user.py
@@ -17,11 +16,6 @@ banking-system/
 │   ├── accounts.txt
 │   ├── master_accounts.txt
 │   └── transactions.log
-│
-├── docs/
-│   ├── Phase1_Test_Cases_Table.pdf
-│   ├── Phase1_Test_Plan.pdf
-│   └── Phase1_Requirements_Issues.pdf
 │
 ├── tests/
 │   ├── current_accounts/
