@@ -302,12 +302,10 @@ def handle_disable_account(account_holder: str, account_number: str):
     except Exception as e:
         return f"Disable failed: {str(e)}"
 
-# CHANGE PLAN
+# CHANGE PLAN (STUDENT/NON)
 
 def handle_change_plan(account_holder: str, account_number: str):
     """
-    Changes payment plan to student/non-student.
-
     Constraints:
         - Admin only
         - Account must exist
