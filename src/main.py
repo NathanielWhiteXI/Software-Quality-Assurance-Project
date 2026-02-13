@@ -1,17 +1,12 @@
 from frontend import *
 
 def main():
-    """
-    CLI loop:
-        - Gets menu selection
-        - Collects input
-        - Calls appropriate handler
-        - Prints returned result
-    """
     while True:
         try:
+            # Gets menu selection
             choice = display_main_menu()
 
+            # Collects inputs, calls handlers, and returns result
             if choice == 1:
                 name = input("Enter account holder name: ")
                 balance = float(input("Enter initial deposit: "))
