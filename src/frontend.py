@@ -29,7 +29,7 @@ def format_alpha(field: str, length: int) -> str:
     return field.ljust(length)[:length]
 
 def format_numeric(field: str, length: int) -> str:
-    return field.zfill(length)[-length:]
+    return str(field).zfill(length)[-length:]
 
 def format_money(amount: float) -> str:
     return f"{amount:08.2f}"
