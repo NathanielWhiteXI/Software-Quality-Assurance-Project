@@ -21,6 +21,19 @@ VALID_COMPANIES = {
     "FI": "Fast Internet, Inc. (FI)"
 }
 
+session_transactions = []  # stores formatted 40-char transaction lines
+
+# FORMAT FUNCTIONS FOR TRANSACTION STORAGE
+
+def format_alpha(field: str, length: int) -> str:
+    return field.ljust(length)[:length]
+
+def format_numeric(field: str, length: int) -> str:
+    return field.zfill(length)[-length:]
+
+def format_money(amount: float) -> str:
+    return f"{amount:08.2f}"
+
 # MAIN MENU
 
 def display_main_menu():
@@ -42,6 +55,30 @@ def display_main_menu():
 
     choice = input("Select an option: ")
     return int(choice)
+
+# RECORD TRANSACTIONS
+
+def record_transaction(code: str,
+                       account_holder: str = "",
+                       account_number: str = "00000",
+                       amount: float = 0.0,
+                       misc: str = ""):
+    """
+    Creates and stores a properly formatted 40-character transaction line.
+    """
+
+    CC = format_numeric(code, 2)
+    AAAAA = format_alpha(account_holder, 20)
+    NNNNN = format_numeric(account_number, 5)
+    PPPPPPPP = format_money(amount)
+    MM = format_alpha(misc, 2)
+
+    line = f"{CC}_{AAAAA}_{NNNNN}_{PPPPPPPP}_{MM}"
+
+    if len(line) != 40:
+        raise ValueError("Transaction line is not 40 characters.")
+
+    session_transactions.append(line)
 
 # LOGIN
 
@@ -71,24 +108,37 @@ def handle_login(session_type: str, account_holder: str | None = None):
 
 # LOGOUT
 
-def handle_logout() -> str:
-    global current_session, session_bill_totals
+def handle_logout():
+    global current_session, session_bill_totals, session_transactions
 
     if not current_session["logged_in"]:
         return "Error: No active session."
 
-    # controller.save_transactions()  # backend responsibility
+    # Add end-of-session record
+    record_transaction("00")
 
+    '''
+    WRITING TO FILE DOES NOT WORK RIGHT NOW
+    '''
+    try:
+        with open("bank_transaction_file.txt", "w") as f:
+            for line in session_transactions:
+                f.write(line + "\n")
+    except Exception as e:
+        return f"Error writing transaction file: {str(e)}"
+
+    # Reset session
     current_session = {
         "logged_in": False,
         "mode": None,
         "account_holder": None
     }
 
-    # Reset session bill totals
     session_bill_totals = { "EC": 0.0, "CQ": 0.0, "FI": 0.0 }
+    session_transactions = []
 
-    return "Logout successful."
+    return "Logout successful. Transaction file written."
+
 
 
 
@@ -101,6 +151,8 @@ def handle_create_account(name: str, initial_balance: float):
     Expected backend call:
         controller.create_account(name, initial_balance)
     """
+    record_transaction("05", name, 0, initial_balance) # REPLACE 0 WITH NEW ID
+
     try:
         # account = controller.create_account(name, initial_balance)
         return f"Account successfully created for {name}."
@@ -114,6 +166,7 @@ def handle_deposit(account_id: str, amount: float):
     """
     Returns: Success or error message (str)
     """
+    record_transaction("04", "John Doe", account_id, amount) # SWAP JOHN DOE WITH account name from account id
     try:
         # controller.deposit(account_id, amount)
         return "Deposit successful."
@@ -127,6 +180,7 @@ def handle_withdraw(account_id: str, amount: float):
     """
     Returns: Success or error message (str)
     """
+    record_transaction("01", "John Doe", account_id, amount) # SWAP JOHN DOE WITH account name from account id
     try:
         # controller.withdraw(account_id, amount)
         return "Withdrawal successful."
@@ -140,6 +194,7 @@ def handle_transfer(src_id: str, dest_id: str, amount: float):
     """
     Returns: Success or error message (str)
     """
+    record_transaction("02", "John Doe", src_id, amount) # SWAP JOHN DOE WITH account name from account id
     try:
         # controller.transfer(src_id, dest_id, amount)
         return "Transfer successful."
@@ -167,6 +222,8 @@ def handle_paybill(account_number: str, company_code: str, amount: float, accoun
 
     if amount <= 0:
         return "Error: Invalid payment amount."
+
+    record_transaction("03", account_holder, account_number, amount, company_code)
 
     # If admin, require account holder name
     if current_session["mode"] == "admin":
@@ -256,6 +313,8 @@ def handle_delete_account(account_holder: str, account_number: str):
     if not account_holder or not account_number:
         return "Error: Account holder and account number required."
 
+    record_transaction("06", account_holder, account_number)
+
     try:
         # controller.delete_account(account_holder, account_number)
         # Backend should:
@@ -289,6 +348,8 @@ def handle_disable_account(account_holder: str, account_number: str):
     if not account_holder or not account_number:
         return "Error: Account holder and account number required."
 
+    record_transaction("07", account_holder, account_number)
+
     try:
         # controller.disable_account(account_holder, account_number)
         # Backend should:
@@ -320,6 +381,8 @@ def handle_change_plan(account_holder: str, account_number: str):
 
     if not account_holder or not account_number:
         return "Error: Account holder and account number required."
+
+    record_transaction("08", account_holder, account_number)
 
     try:
         # controller.change_plan(account_holder, account_number)
