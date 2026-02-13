@@ -34,7 +34,11 @@ def display_main_menu():
     print("7. Pay Bill")
     print("8. View Account")
     print("9. List All Accounts")
-    print("10. Exit")
+    print("10. Delete Account (Admin)")
+    print("11. Disable Account (Admin)")
+    print("12. Change Plan (Admin)")
+    print("13. Exit")
+
 
     choice = input("Select an option: ")
     return int(choice)
@@ -231,3 +235,103 @@ def handle_list_accounts():
         return "Listing all accounts..."
     except Exception as e:
         return f"Error listing accounts: {str(e)}"
+
+# DELETE ACCOUNT
+
+def handle_delete_account(account_holder: str, account_number: str):
+    """
+    Constraints:
+        - Admin only
+        - Account holder must exist
+        - Account number must match holder
+        - No further transactions allowed on deleted account
+    """
+
+    if not current_session["logged_in"]:
+        return "Error: You must login first."
+
+    if current_session["mode"] != "admin":
+        return "Error: Delete is a privileged transaction (admin only)."
+
+    if not account_holder or not account_number:
+        return "Error: Account holder and account number required."
+
+    try:
+        # controller.delete_account(account_holder, account_number)
+        # Backend should:
+        # - Validate holder exists
+        # - Validate account belongs to holder
+        # - Mark account as deleted
+        # - Prevent future transactions
+        # - Save transaction record
+
+        return f"Account {account_number} deleted successfully."
+
+    except Exception as e:
+        return f"Delete failed: {str(e)}"
+
+# DISABLE ACCOUNT
+
+def handle_disable_account(account_holder: str, account_number: str):
+    """
+    Constraints:
+        - Admin only
+        - Must be valid account
+        - No further transactions allowed on disabled account
+    """
+
+    if not current_session["logged_in"]:
+        return "Error: You must login first."
+
+    if current_session["mode"] != "admin":
+        return "Error: Disable is a privileged transaction (admin only)."
+
+    if not account_holder or not account_number:
+        return "Error: Account holder and account number required."
+
+    try:
+        # controller.disable_account(account_holder, account_number)
+        # Backend should:
+        # - Verify account exists
+        # - Verify ownership
+        # - Change status A -> D
+        # - Save transaction
+
+        return f"Account {account_number} disabled successfully."
+
+    except Exception as e:
+        return f"Disable failed: {str(e)}"
+
+# CHANGE PLAN
+
+def handle_change_plan(account_holder: str, account_number: str):
+    """
+    Changes payment plan to student/non-student.
+
+    Constraints:
+        - Admin only
+        - Account must exist
+        - Must belong to specified holder
+    """
+
+    if not current_session["logged_in"]:
+        return "Error: You must login first."
+
+    if current_session["mode"] != "admin":
+        return "Error: ChangePlan is a privileged transaction (admin only)."
+
+    if not account_holder or not account_number:
+        return "Error: Account holder and account number required."
+
+    try:
+        # controller.change_plan(account_holder, account_number)
+        # Backend should:
+        # - Verify account exists
+        # - Verify ownership
+        # - Change plan SP <-> NP
+        # - Save transaction
+
+        return f"Payment plan updated for account {account_number}."
+
+    except Exception as e:
+        return f"ChangePlan failed: {str(e)}"

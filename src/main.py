@@ -89,11 +89,29 @@ def main():
 
                 print(handle_list_accounts())
 
-            # EXIT PROGRAM
+            # DELETE
             elif choice == 10:
+                holder = input("Enter account holder name: ")
+                acc_number = input("Enter account number: ")
+                print(handle_delete_account(holder, acc_number))
+
+            # DISABLE
+            elif choice == 11:
+                holder = input("Enter account holder name: ")
+                acc_number = input("Enter account number: ")
+                print(handle_disable_account(holder, acc_number))
+
+            # CHANGE PLAN
+            elif choice == 12:
+                holder = input("Enter account holder name: ")
+                acc_number = input("Enter account number: ")
+                print(handle_change_plan(holder, acc_number))
+
+            # EXIT
+            elif choice == 13:
                 print("Exiting program.")
                 break
-
+            
             else:
                 print("Invalid selection.")
 
