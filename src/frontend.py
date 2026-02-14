@@ -14,11 +14,13 @@ To demonstrate architecture for account operations, we use fictional accounts fo
 The frontend also processes other transactions, such as log-in, logout, and paying bills.
 '''
 
+current_user = "" 
+
 # SESSION STATE
 current_session = {
     "logged_in": False,
     "mode": None,          # "standard" or "admin"
-    "account_holder": None # Only used in standard mode
+    "account_holder": None # Only used in standard mode to control session transactions.
 }
 
 # Track total paid per company in session (standard mode restriction)
