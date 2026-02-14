@@ -1,7 +1,20 @@
 # Later: Create a Backend module called controller
 
-# SESSION STATE
+'''
+The frontend is controlled by several dictionaries.
 
+current_session controls the information about the front-end and its session state. It is used to show the proper front-end for the current security mode
+(not logged in, standard, admin)
+
+The frontend also reads in a file (current_bank_accounts_file.txt, this is currently nonfunctional and will be tested) and writes to a file 
+(bank-transaction-file.txt) 
+
+To demonstrate architecture for account operations, we use fictional accounts for the time being. This will be overhauled in the next iteration.
+
+The frontend also processes other transactions, such as log-in, logout, and paying bills.
+'''
+
+# SESSION STATE
 current_session = {
     "logged_in": False,
     "mode": None,          # "standard" or "admin"
@@ -15,6 +28,7 @@ session_bill_totals = {
     "FI": 0.0
 }
 
+#Companies allowed to receive bills.
 VALID_COMPANIES = {
     "EC": "The Bright Light Electric Company (EC)",
     "CQ": "Credit Card Company Q (CQ)",
@@ -24,7 +38,6 @@ VALID_COMPANIES = {
 session_transactions = []  # stores formatted 40-char transaction lines
 
 # FORMAT FUNCTIONS FOR TRANSACTION STORAGE
-
 def format_alpha(field: str, length: int) -> str:
     return field.ljust(length)[:length]
 
@@ -36,25 +49,69 @@ def format_money(amount: float) -> str:
 
 # MAIN MENU
 
+# This controls the main menu display. Each also returns a choice and mode to the front end to display the right amount.
 def display_main_menu():
-    print("\n<+= Banking System =+>")
-    print("1. Login")
-    print("2. Logout")
-    print("3. Create Account")
-    print("4. Deposit")
-    print("5. Withdraw")
-    print("6. Transfer")
-    print("7. Pay Bill")
-    print("8. View Account")
-    print("9. List All Accounts")
-    print("10. Delete Account (Admin)")
-    print("11. Disable Account (Admin)")
-    print("12. Change Plan (Admin)")
-    print("13. Exit")
+    #Case 1: They are not logged in.
+    if not current_session["logged_in"]:
+        print("\n<+= Banking System =+>")
+        print("1. Login")
+        print("2. Exit")
 
+        while True:
+            choice = input("Select an option: ")
+            try:
+                print(f"Choice: {choice}")
+                return int(choice), "a"
+            except ValueError:
+                print("Invalid input. Please enter a number.")
 
-    choice = input("Select an option: ")
-    return int(choice)
+    #Case 2: They are logged in as a non-privileged user.
+    elif current_session["mode"] == "standard":
+        print("\n<+= Banking System =+>")
+        print("1. Login")
+        print("2. Logout")
+        print("3. Create Account")
+        print("4. Deposit")
+        print("5. Withdraw")
+        print("6. Transfer")
+        print("7. Pay Bill")
+        print("8. View Account")
+        print("9. List All Accounts")
+        print("10. Exit")
+
+        while True:
+            choice = input("Select an option: ")
+            try:
+                print(f"Choice: {choice}")
+                return int(choice), "b"
+            except ValueError:
+                print("Invalid input. Please enter a number.")
+    
+    #Case 3: They are logged in as an administrator.
+    else:
+        print("\n<+= Banking System =+>")
+        print("1. Login")
+        print("2. Logout")
+        print("3. Create Account")
+        print("4. Deposit")
+        print("5. Withdraw")
+        print("6. Transfer")
+        print("7. Pay Bill")
+        print("8. View Account")
+        print("9. List All Accounts")
+        print("10. Delete Account (Admin)")
+        print("11. Disable Account (Admin)")
+        print("12. Change Plan (Admin)")
+        print("13. Exit")
+
+        while True:
+            choice = input("Select an option: ")
+            try:
+                print(f"Choice: {choice}")
+                return int(choice), "c"
+            except ValueError:
+                print("Invalid input. Please enter a number.")
+
 
 # RECORD TRANSACTIONS
 
@@ -62,32 +119,37 @@ def record_transaction(code: str,
                        account_holder: str = "",
                        account_number: str = "00000",
                        amount: float = 0.0,
-                       misc: str = ""):
+                       misc: str = "__"):
     """
     Creates and stores a properly formatted 40-character transaction line.
     """
 
+    #Calls format functions to properly format string.
     CC = format_numeric(code, 2)
     AAAAA = format_alpha(account_holder, 20)
     NNNNN = format_numeric(account_number, 5)
     PPPPPPPP = format_money(amount)
     MM = format_alpha(misc, 2)
 
-    line = f"{CC}_{AAAAA}_{NNNNN}_{PPPPPPPP}_{MM}"
+    line = f"{CC} {AAAAA} {NNNNN} {PPPPPPPP} {MM}"
+    print(line)
+    print(len(line))
 
-    if len(line) != 40:
-        raise ValueError("Transaction line is not 40 characters.")
+    # Will be used later to determine if the transactions are properly formatted or not.
+
+    # if len(line) != 40:
+    #     raise ValueError("Transaction line is not 40 characters.")
 
     session_transactions.append(line)
 
 # LOGIN
-
 def handle_login(session_type: str, account_holder: str | None = None):
     """
     Returns: Success and/or error message (str)
     """
     global current_session
 
+    # Checks if the mode is valid.
     if current_session["logged_in"]:
         return "Error: Already logged in. Please logout first."
 
@@ -99,6 +161,7 @@ def handle_login(session_type: str, account_holder: str | None = None):
 
     # controller.load_accounts_file()  # backend responsibility
 
+    #Sets current_session to the correct types.
     current_session["logged_in"] = True
     current_session["mode"] = session_type
     current_session["account_holder"] = account_holder
@@ -121,9 +184,10 @@ def handle_logout():
     WRITING TO FILE DOES NOT WORK RIGHT NOW
     '''
     try:
-        with open("bank_transaction_file.txt", "w") as f:
+        with open("./records/bank_transaction_file.txt", "w") as f:
             for line in session_transactions:
                 f.write(line + "\n")
+            print("Transactions:", session_transactions)
     except Exception as e:
         return f"Error writing transaction file: {str(e)}"
 
