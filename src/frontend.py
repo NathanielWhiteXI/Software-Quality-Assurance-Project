@@ -320,7 +320,7 @@ def handle_paybill(account_number: str, company_code: str, amount: float, accoun
         return f"Paybill failed: {str(e)}"
 
 
-# PROTECTED ACTION CHECK
+# Authentication function
 
 def require_login():
     """
