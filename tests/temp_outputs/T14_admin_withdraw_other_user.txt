@@ -1,0 +1,27 @@
+
+<+= Banking System =+>
+1. Login
+2. Exit
+Select an option: Choice: login
+Invalid input. Please enter a number.
+Select an option: Choice: admin
+Invalid input. Please enter a number.
+Select an option: Choice: withdrawal
+Invalid input. Please enter a number.
+Select an option: Choice: Jane Smith
+Invalid input. Please enter a number.
+Select an option: Choice: 00010
+Invalid selection.
+
+<+= Banking System =+>
+1. Login
+2. Exit
+Select an option: Choice: 400
+Invalid selection.
+
+<+= Banking System =+>
+1. Login
+2. Exit
+Select an option: Choice: logout
+Invalid input. Please enter a number.
+Select an option: 

@@ -1,0 +1,39 @@
+
+<+= Banking System =+>
+1. Login
+2. Exit
+Select an option: Choice: login
+Invalid input. Please enter a number.
+Select an option: Choice: admin
+Invalid input. Please enter a number.
+Select an option: Choice: disable
+Invalid input. Please enter a number.
+Select an option: Choice: Admin Target
+Invalid input. Please enter a number.
+Select an option: Choice: 00020
+Invalid selection.
+
+<+= Banking System =+>
+1. Login
+2. Exit
+Select an option: Choice: paybill
+Invalid input. Please enter a number.
+Select an option: Choice: Admin Target
+Invalid input. Please enter a number.
+Select an option: Choice: 00020
+Invalid selection.
+
+<+= Banking System =+>
+1. Login
+2. Exit
+Select an option: Choice: EC
+Invalid input. Please enter a number.
+Select an option: Choice: 10
+Invalid selection.
+
+<+= Banking System =+>
+1. Login
+2. Exit
+Select an option: Choice: logout
+Invalid input. Please enter a number.
+Select an option: 

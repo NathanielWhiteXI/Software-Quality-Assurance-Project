@@ -1,0 +1,35 @@
+
+<+= Banking System =+>
+1. Login
+2. Exit
+Select an option: Choice: login
+Invalid input. Please enter a number.
+Select an option: Choice: admin
+Invalid input. Please enter a number.
+Select an option: Choice: create
+Invalid input. Please enter a number.
+Select an option: Choice: New User
+Invalid input. Please enter a number.
+Select an option: Choice: 100
+Invalid selection.
+
+<+= Banking System =+>
+1. Login
+2. Exit
+Select an option: Choice: deposit
+Invalid input. Please enter a number.
+Select an option: Choice: 00099
+Invalid selection.
+
+<+= Banking System =+>
+1. Login
+2. Exit
+Select an option: Choice: 10
+Invalid selection.
+
+<+= Banking System =+>
+1. Login
+2. Exit
+Select an option: Choice: logout
+Invalid input. Please enter a number.
+Select an option: 

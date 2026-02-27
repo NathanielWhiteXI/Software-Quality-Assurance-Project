@@ -1,0 +1,13 @@
+
+<+= Banking System =+>
+1. Login
+2. Exit
+Select an option: Choice: login
+Invalid input. Please enter a number.
+Select an option: Choice: standard
+Invalid input. Please enter a number.
+Select an option: Choice: John Doe
+Invalid input. Please enter a number.
+Select an option: Choice: logout
+Invalid input. Please enter a number.
+Select an option: 
