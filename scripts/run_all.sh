@@ -1,9 +1,21 @@
 #!/bin/bash
 
-echo "Running all test cases..."
+PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+INPUT_DIR="$PROJECT_ROOT/tests/inputs"
+SRC_MAIN="$PROJECT_ROOT/src/main.py"
 
-for input in tests/inputs/*.txt; do
-    filename=$(basename "$input")
-    echo "Running $filename"
-    python3 src/main.py < "$input" > "tests/output_$filename"
+echo "Running all test inputs..."
+echo "----------------------------------"
+
+for input_file in "$INPUT_DIR"/*.txt
+do
+    test_name=$(basename "$input_file")
+    echo "Running $test_name"
+    echo "----------------------------------"
+
+    python3 "$SRC_MAIN" < "$input_file"
+
+    echo ""
 done
+
+echo "Finished running all tests."
