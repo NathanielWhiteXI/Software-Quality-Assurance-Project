@@ -2,20 +2,50 @@
 <+= Banking System =+>
 1. Login
 2. Exit
-Select an option: Choice: login
-Invalid input. Please enter a number.
-Select an option: Choice: standard
-Invalid input. Please enter a number.
-Select an option: Choice: John Doe
-Invalid input. Please enter a number.
-Select an option: Choice: withdrawal
-Invalid input. Please enter a number.
-Select an option: Choice: 00001
-Enter session type (standard/admin): Invalid session type.
+Select an option: Choice: 1
+Enter session type (standard/admin): Enter account holder name: Login successful (standard mode).
 
 <+= Banking System =+>
 1. Login
-2. Exit
-Select an option: Choice: logout
-Invalid input. Please enter a number.
+2. Logout
+3. Create Account
+4. Deposit
+5. Withdraw
+6. Transfer
+7. Pay Bill
+8. View Account
+9. List All Accounts
+10. Exit
+Select an option: Choice: 5
+Enter account ID: Enter withdrawal amount: 01 John Doe             00001 00600.00 __
+41
+Withdrawal successful.
+
+<+= Banking System =+>
+1. Login
+2. Logout
+3. Create Account
+4. Deposit
+5. Withdraw
+6. Transfer
+7. Pay Bill
+8. View Account
+9. List All Accounts
+10. Exit
+Select an option: Choice: 2
+00                      00000 00000.00 __
+41
+Error writing transaction file: [Errno 2] No such file or directory: './records/bank_transaction_file.txt'
+
+<+= Banking System =+>
+1. Login
+2. Logout
+3. Create Account
+4. Deposit
+5. Withdraw
+6. Transfer
+7. Pay Bill
+8. View Account
+9. List All Accounts
+10. Exit
 Select an option: 

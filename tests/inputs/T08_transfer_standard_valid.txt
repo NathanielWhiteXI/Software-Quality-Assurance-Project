@@ -1,8 +1,8 @@
-login
+1
 standard
 John Doe
-transfer
+6
 00001
 00010
 300
-logout
+2

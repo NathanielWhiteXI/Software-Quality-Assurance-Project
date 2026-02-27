@@ -1,6 +1,6 @@
-login
+1
 admin
-changeplan
+12
 John Doe
 00001
-logout
+2

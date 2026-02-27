@@ -1,7 +1,7 @@
-withdrawal
+5
 00001
 100
-login
+1
 standard
 John Doe
-logout
+2

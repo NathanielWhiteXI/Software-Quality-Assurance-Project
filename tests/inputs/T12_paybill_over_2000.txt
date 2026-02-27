@@ -1,8 +1,8 @@
-login
+1
 standard
 John Doe
-paybill
+7
 00001
 FI
 2500
-logout
+2

@@ -1,7 +1,7 @@
-login
+1
 standard
 Jane Smith
-withdrawal
+5
 00011
 10
-logout
+2

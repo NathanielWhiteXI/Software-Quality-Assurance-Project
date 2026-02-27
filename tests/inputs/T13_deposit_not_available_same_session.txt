@@ -1,10 +1,10 @@
-login
+1
 standard
 John Doe
-deposit
+4
 00002
 1000
-withdrawal
+5
 00002
 900
-logout
+2

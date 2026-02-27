@@ -1,10 +1,10 @@
-login
+1
 admin
-delete
+10
 Jane Smith
 00010
-withdrawal
+5
 Jane Smith
 00010
 10
-logout
+2

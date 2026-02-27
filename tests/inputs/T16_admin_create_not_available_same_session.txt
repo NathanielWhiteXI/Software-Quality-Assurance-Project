@@ -1,9 +1,9 @@
-login
+1
 admin
-create
+3
 New User
 100
-deposit
+4
 00099
 10
-logout
+2

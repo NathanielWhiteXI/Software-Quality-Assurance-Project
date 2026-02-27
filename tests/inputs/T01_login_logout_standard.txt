@@ -1,4 +1,4 @@
-login
+1
 standard
 John Doe
-logout
+2

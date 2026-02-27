@@ -1,6 +1,6 @@
-login
+1
 standard
 John Doe
-login
+1
 admin
-logout
+2

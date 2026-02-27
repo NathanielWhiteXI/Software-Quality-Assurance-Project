@@ -2,26 +2,76 @@
 <+= Banking System =+>
 1. Login
 2. Exit
-Select an option: Choice: login
-Invalid input. Please enter a number.
-Select an option: Choice: admin
-Invalid input. Please enter a number.
-Select an option: Choice: withdrawal
-Invalid input. Please enter a number.
-Select an option: Choice: Jane Smith
-Invalid input. Please enter a number.
-Select an option: Choice: 00010
-Invalid selection.
+Select an option: Choice: 1
+Enter session type (standard/admin): Login successful (admin mode).
 
 <+= Banking System =+>
 1. Login
-2. Exit
+2. Logout
+3. Create Account
+4. Deposit
+5. Withdraw
+6. Transfer
+7. Pay Bill
+8. View Account
+9. List All Accounts
+10. Delete Account (Admin)
+11. Disable Account (Admin)
+12. Change Plan (Admin)
+13. Exit
+Select an option: Choice: 5
+Enter account ID: Enter withdrawal amount: 01 John Doe             Smith 00010.00 __
+41
+Withdrawal successful.
+
+<+= Banking System =+>
+1. Login
+2. Logout
+3. Create Account
+4. Deposit
+5. Withdraw
+6. Transfer
+7. Pay Bill
+8. View Account
+9. List All Accounts
+10. Delete Account (Admin)
+11. Disable Account (Admin)
+12. Change Plan (Admin)
+13. Exit
 Select an option: Choice: 400
 Invalid selection.
 
 <+= Banking System =+>
 1. Login
-2. Exit
-Select an option: Choice: logout
-Invalid input. Please enter a number.
+2. Logout
+3. Create Account
+4. Deposit
+5. Withdraw
+6. Transfer
+7. Pay Bill
+8. View Account
+9. List All Accounts
+10. Delete Account (Admin)
+11. Disable Account (Admin)
+12. Change Plan (Admin)
+13. Exit
+Select an option: Choice: 2
+00                      00000 00000.00 __
+41
+Error writing transaction file: [Errno 2] No such file or directory: './records/bank_transaction_file.txt'
+
+<+= Banking System =+>
+1. Login
+2. Logout
+3. Create Account
+4. Deposit
+5. Withdraw
+6. Transfer
+7. Pay Bill
+8. View Account
+9. List All Accounts
+10. Delete Account (Admin)
+11. Disable Account (Admin)
+12. Change Plan (Admin)
+13. Exit
 Select an option: 

@@ -1,11 +1,11 @@
-login
+1
 admin
-disable
+11
 Admin Target
 00020
-paybill
+7
 Admin Target
 00020
 EC
 10
-logout
+2

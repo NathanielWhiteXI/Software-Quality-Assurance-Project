@@ -2,26 +2,19 @@
 <+= Banking System =+>
 1. Login
 2. Exit
-Select an option: Choice: login
-Invalid input. Please enter a number.
-Select an option: Choice: standard
-Invalid input. Please enter a number.
-Select an option: Choice: John Doe
-Invalid input. Please enter a number.
-Select an option: Choice: paybill
-Invalid input. Please enter a number.
-Select an option: Choice: 00001
-Enter session type (standard/admin): Invalid session type.
+Select an option: Choice: 1
+Enter session type (standard/admin): Enter account holder name: Login successful (standard mode).
 
 <+= Banking System =+>
 1. Login
-2. Exit
-Select an option: Choice: 500
-Invalid selection.
-
-<+= Banking System =+>
-1. Login
-2. Exit
-Select an option: Choice: logout
-Invalid input. Please enter a number.
-Select an option: 
+2. Logout
+3. Create Account
+4. Deposit
+5. Withdraw
+6. Transfer
+7. Pay Bill
+8. View Account
+9. List All Accounts
+10. Exit
+Select an option: Choice: 7
+Enter account number: Enter company code (EC, CQ, FI): Enter payment amount: 

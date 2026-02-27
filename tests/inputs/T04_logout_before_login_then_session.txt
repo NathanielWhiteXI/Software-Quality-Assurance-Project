@@ -1,5 +1,5 @@
-logout
-login
+2
+1
 standard
 John Doe
-logout
+2
