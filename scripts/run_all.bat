@@ -2,18 +2,18 @@
 setlocal enabledelayedexpansion
 
 REM Get project root
-set PROJECT_ROOT=%~dp0..
-set INPUT_DIR=%PROJECT_ROOT%\tests\inputs
-set SRC_MAIN=%PROJECT_ROOT%\src\main.py
+set "PROJECT_ROOT=%~dp0.."
+set "INPUT_DIR=%PROJECT_ROOT%\tests\inputs"
+set "SRC_MAIN=%PROJECT_ROOT%\src\main.py"
 
 echo Running all test inputs...
 echo ----------------------------------
 
-for %%f in (%INPUT_DIR%\*.txt) do (
+for %%f in ("%INPUT_DIR%\*.txt") do (
     echo Running %%~nxf
     echo ----------------------------------
 
-    python %SRC_MAIN% < "%%f"
+    python "!SRC_MAIN!" < "%%f"
 
     echo.
 )
