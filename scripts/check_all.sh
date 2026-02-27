@@ -23,10 +23,10 @@ do
 
     if diff -q "$output_file" "$expected_file" > /dev/null
     then
-        echo "✅ PASS"
+        echo "PASS"
         ((PASS_COUNT++))
     else
-        echo "❌ FAIL"
+        echo "FAIL"
         echo "Differences:"
         diff "$output_file" "$expected_file"
         ((FAIL_COUNT++))
