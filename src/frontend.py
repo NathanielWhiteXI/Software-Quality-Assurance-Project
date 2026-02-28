@@ -14,8 +14,6 @@ To demonstrate architecture for account operations, we use fictional accounts fo
 The frontend also processes other transactions, such as log-in, logout, and paying bills.
 '''
 
-current_user = "" 
-
 # SESSION STATE
 current_session = {
     "logged_in": False,
@@ -37,6 +35,51 @@ VALID_COMPANIES = {
     "FI": "Fast Internet, Inc. (FI)"
 }
 
+#Function to parse current accounts file to validate login process.
+def load_accounts_file(file, input_name, input_id):
+    with open(file, "r") as f:
+        for line in f:
+            line = line.rstrip("\n")
+
+            # Extract fields by fixed positions
+            raw_id = line[0:5]
+            name = line[6:26].strip()
+            status = line[27]           # Type of Account
+            raw_balance = line[-8:]
+
+            # Stop at EOF marker
+            if raw_id == "!0000":
+                return (-1, "F")
+
+            # Convert ID to int for comparison
+            try:
+                numeric_id = int(raw_id)
+            except ValueError:
+                continue
+
+            if numeric_id == int(input_id) and input_name == name:
+                return (float(raw_balance), status)
+
+    return None
+
+def does_Account_Exist(file, input_id):
+    with open (file, 'r') as f:
+        for line in f:
+            line = line.rstrip("\n")
+            
+            #Process ID
+            raw_id = line[0:5]
+
+            try:
+                numeric_id = int(raw_id)
+            except ValueError:
+                continue
+
+            if numeric_id == int(input_id):
+                return True
+    
+        return False
+
 session_transactions = []  # stores formatted 40-char transaction lines
 
 # FORMAT FUNCTIONS FOR TRANSACTION STORAGE
@@ -52,67 +95,67 @@ def format_money(amount: float) -> str:
 # MAIN MENU
 
 # This controls the main menu display. Each also returns a choice and mode to the front end to display the right amount.
-def display_main_menu():
+def display_main_menu(test_mode=False):
     #Case 1: They are not logged in.
     if not current_session["logged_in"]:
-        print("\n<+= Banking System =+>")
-        print("1. Login")
-        print("2. Exit")
+        if not test_mode:
+            print("\n<+= Banking System =+>")
+            print("1. Login")
+            print("2. Exit")
 
         while True:
-            choice = input("Select an option: ")
+            choice = input() if test_mode else input("Select an option: ")
             try:
-                print(f"Choice: {choice}")
                 return int(choice), "a"
             except ValueError:
-                print("Invalid input. Please enter a number.")
+                if not test_mode: print("Invalid input. Please enter a number.")
 
     #Case 2: They are logged in as a non-privileged user.
     elif current_session["mode"] == "standard":
-        print("\n<+= Banking System =+>")
-        print("1. Login")
-        print("2. Logout")
-        print("3. Create Account")
-        print("4. Deposit")
-        print("5. Withdraw")
-        print("6. Transfer")
-        print("7. Pay Bill")
-        print("8. View Account")
-        print("9. List All Accounts")
-        print("10. Exit")
+        if not test_mode:
+            print("\n<+= Banking System =+>")
+            print("1. Login")
+            print("2. Logout")
+            print("3. Create Account")
+            print("4. Deposit")
+            print("5. Withdraw")
+            print("6. Transfer")
+            print("7. Pay Bill")
+            print("8. View Account")
+            print("9. List All Accounts")
+            print("10. Exit")
 
         while True:
-            choice = input("Select an option: ")
+            choice = input() if test_mode else input("Select an option: ")
             try:
-                print(f"Choice: {choice}")
                 return int(choice), "b"
             except ValueError:
-                print("Invalid input. Please enter a number.")
+                if not test_mode: print("Invalid input. Please enter a number.")
     
     #Case 3: They are logged in as an administrator.
     else:
-        print("\n<+= Banking System =+>")
-        print("1. Login")
-        print("2. Logout")
-        print("3. Create Account")
-        print("4. Deposit")
-        print("5. Withdraw")
-        print("6. Transfer")
-        print("7. Pay Bill")
-        print("8. View Account")
-        print("9. List All Accounts")
-        print("10. Delete Account (Admin)")
-        print("11. Disable Account (Admin)")
-        print("12. Change Plan (Admin)")
-        print("13. Exit")
+        if not test_mode:
+            print("\n<+= Banking System =+>")
+            print("1. Login")
+            print("2. Logout")
+            print("3. Create Account")
+            print("4. Deposit")
+            print("5. Withdraw")
+            print("6. Transfer")
+            print("7. Pay Bill")
+            print("8. View Account")
+            print("9. List All Accounts")
+            print("10. Delete Account (Admin)")
+            print("11. Disable Account (Admin)")
+            print("12. Change Plan (Admin)")
+            print("13. Exit")
 
         while True:
-            choice = input("Select an option: ")
+            choice = input() if test_mode else input("Select an option: ")
             try:
-                print(f"Choice: {choice}")
                 return int(choice), "c"
             except ValueError:
-                print("Invalid input. Please enter a number.")
+                if not test_mode : print("Invalid input. Please enter a number.")
 
 
 # RECORD TRANSACTIONS
@@ -121,7 +164,7 @@ def record_transaction(code: str,
                        account_holder: str = "",
                        account_number: str = "00000",
                        amount: float = 0.0,
-                       misc: str = "__"):
+                       misc: str = ""):
     """
     Creates and stores a properly formatted 40-character transaction line.
     """
@@ -133,9 +176,8 @@ def record_transaction(code: str,
     PPPPPPPP = format_money(amount)
     MM = format_alpha(misc, 2)
 
-    line = f"{CC} {AAAAA} {NNNNN} {PPPPPPPP} {MM}"
+    line = f"{CC} {AAAAA} {NNNNN} {PPPPPPPP}{MM}"
     print(line)
-    print(len(line))
 
     # Will be used later to determine if the transactions are properly formatted or not.
 
@@ -160,13 +202,11 @@ def handle_login(session_type: str, account_holder: str | None = None):
 
     if session_type == "standard" and not account_holder:
         return "Error: Standard login requires account holder name."
-
-    # controller.load_accounts_file()  # backend responsibility
-
+    
     #Sets current_session to the correct types.
+    current_session["account_holder"] = account_holder
     current_session["logged_in"] = True
     current_session["mode"] = session_type
-    current_session["account_holder"] = account_holder
 
     return f"Login successful ({session_type} mode)."
 
@@ -178,6 +218,8 @@ def handle_logout():
 
     if not current_session["logged_in"]:
         return "Error: No active session."
+    
+    current_session["account_holder"] = ""
 
     # Add end-of-session record
     record_transaction("00")
@@ -186,7 +228,7 @@ def handle_logout():
     WRITING TO FILE DOES NOT WORK RIGHT NOW
     '''
     try:
-        with open("./records/bank_transaction_file.txt", "w") as f:
+        with open("./records/bank_transaction_file.txt", "a") as f:
             for line in session_transactions:
                 f.write(line + "\n")
             print("Transactions:", session_transactions)
@@ -205,9 +247,6 @@ def handle_logout():
 
     return "Logout successful. Transaction file written."
 
-
-
-
 # ACCOUNT CREATION
 
 def handle_create_account(name: str, initial_balance: float):
@@ -217,13 +256,63 @@ def handle_create_account(name: str, initial_balance: float):
     Expected backend call:
         controller.create_account(name, initial_balance)
     """
-    record_transaction("05", name, 0, initial_balance) # REPLACE 0 WITH NEW ID
+    global current_session
+
+    if current_session["mode"] != "admin":
+        return "Error: Privileged Transaction."
 
     try:
-        # account = controller.create_account(name, initial_balance)
+        acc_id = write_Account_To_File('../tests/current_accounts/currentaccounts.txt', name, initial_balance)
+
+        record_transaction("05", name, acc_id, initial_balance) # REPLACE 0 WITH NEW ID
+        
         return f"Account successfully created for {name}."
     except Exception as e:
         return f"Error creating account: {str(e)}"
+
+def write_Account_To_File(file, name, balance):
+    # Read all existing lines
+    with open(file, "r") as f:
+        lines = f.readlines()
+
+    # Remove trailing newline-only lines
+    while lines and lines[-1].strip() == "":
+        lines.pop()
+
+    # Remove the last meaningful line (the delimiter)
+    if lines:
+        lines.pop()
+
+    # Collect used IDs
+    used_ids = set()
+    for line in lines:
+        line = line.rstrip("\n")
+        if len(line) < 5:
+            continue
+        raw_id = line[0:5]
+        try:
+            used_ids.add(int(raw_id))
+        except ValueError:
+            continue
+
+    # Pick the lowest unused ID
+    new_id = 0
+    while new_id in used_ids:
+        new_id += 1
+
+    # Format new account line
+    id_str = f"{new_id:05}"
+    name_field = name.ljust(20)[:20]
+    balance_field = f"{balance:08.2f}"
+    new_line = f"{id_str} {name_field} A {balance_field}\n"
+
+    # Rebuild file: all lines except old delimiter, then new account, then delimiter
+    with open(file, "w") as f:
+        for line in lines:
+            f.write(line)
+        f.write(new_line)
+        f.write("!0000 END_OF_FILE\n")
+    return new_id
 
 
 # DEPOSIT
@@ -232,6 +321,14 @@ def handle_deposit(account_id: str, amount: float):
     """
     Returns: Success or error message (str)
     """
+    global current_session
+
+    balance, account_type = load_accounts_file('../tests/current_accounts/currentaccounts.txt', current_session["account_holder"], account_id)
+
+    #Checks if account exists
+    if (account_type == "F"):
+        return f"Error: Account does not exist."
+
     record_transaction("04", "John Doe", account_id, amount) # SWAP JOHN DOE WITH account name from account id
     try:
         # controller.deposit(account_id, amount)
@@ -242,11 +339,31 @@ def handle_deposit(account_id: str, amount: float):
 
 # WITHDRAW
 
-def handle_withdraw(account_id: str, amount: float):
+def handle_withdraw(account_id: str, amount: float, account_owner: str | None=None):
     """
     Returns: Success or error message (str)
     """
-    record_transaction("01", "John Doe", account_id, amount) # SWAP JOHN DOE WITH account name from account id
+    global current_session
+
+    #If standard, sets it to be correct
+    if account_owner == None:
+        account_owner = current_session['account_holder']
+
+    #Checks if the amount is allowed to be withdrawn ($500 limit)
+    if (amount > 500):
+        return f"Error: {amount} exceeds your limit of $500."
+    
+    #Checks if the amount is less than your equal to your balance (Overdraft)
+    balance, account_type = load_accounts_file('../tests/current_accounts/currentaccounts.txt', account_owner, account_id)
+
+    #Checks if account exists
+    if (account_type == "F"):
+        return f"Error: Account does not exist."
+    
+    if (amount > balance):
+        return f"Error: Cannot overdraft."
+
+    record_transaction("01", account_owner, account_id, amount) # SWAP JOHN DOE WITH account name from account id
     try:
         # controller.withdraw(account_id, amount)
         return "Withdrawal successful."
@@ -260,7 +377,27 @@ def handle_transfer(src_id: str, dest_id: str, amount: float):
     """
     Returns: Success or error message (str)
     """
-    record_transaction("02", "John Doe", src_id, amount) # SWAP JOHN DOE WITH account name from account id
+    global current_session
+
+    #Check you own the source account
+    balance, accountType = load_accounts_file('../tests/current_accounts/currentaccounts.txt', current_session["account_holder"], src_id)
+    if (accountType == "F"):
+        return "Error: You must own the account you intend to transfer from."
+
+    #Check that both accounts exist
+    if not (does_Account_Exist('../tests/current_accounts/currentaccounts.txt', src_id) 
+            or does_Account_Exist('../tests/current_accounts/currentaccounts.txt', dest_id)):
+            return "Error: One or more accounts do not exist."
+    
+    #Check the transaction is not greater than $1000
+    if (amount > 1000):
+        return "Error: Cannot transfer more than $1000."
+    
+    #Check that the transfer does not overdraft.
+    if (amount > balance):
+        return "Error: Cannot transfer more than you own."
+
+    record_transaction("02", current_session["account_holder"], src_id, amount, str(int(dest_id))) # SWAP JOHN DOE WITH account name from account id
     try:
         # controller.transfer(src_id, dest_id, amount)
         return "Transfer successful."
@@ -278,16 +415,27 @@ def handle_paybill(account_number: str, company_code: str, amount: float, accoun
         - Max $2000 per company per session in standard mode
         - Balance must remain >= 0
     """
-    global session_bill_totals
+    global current_session, session_bill_totals
 
+    #Uses the current user information if they are logged in.
+    if account_holder == None:
+        account_holder = current_session["account_holder"]
+
+    #Does not work if the user is not logged in.
     if not current_session["logged_in"]:
         return "Error: You must login first."
 
+    #If the user selects an invalid target.
     if company_code not in VALID_COMPANIES:
         return "Error: Invalid company."
 
+    #If the user pays a zero/negative amount.
     if amount <= 0:
-        return "Error: Invalid payment amount."
+        return "Error: Invalid payment amount. Our CEOs will starve to death."
+    
+    #If the user pays over $2000.
+    if amount > 2000:
+        return "Error: Bill paid cannot exceed $2000."
 
     record_transaction("03", account_holder, account_number, amount, company_code)
 

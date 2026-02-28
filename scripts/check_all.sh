@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e
 
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 INPUT_DIR="$PROJECT_ROOT/tests/inputs"
@@ -16,15 +15,14 @@ FAIL_COUNT=0
 echo "Checking all tests..."
 echo "----------------------------------"
 
-find "$INPUT_DIR" -name "*.txt" -print0 | while IFS= read -r -d '' input_file
-do
+while IFS= read -r -d '' input_file; do
     test_name="$(basename "$input_file")"
     expected_file="$EXPECTED_DIR/$test_name"
     output_file="$TEMP_DIR/$test_name"
 
     echo "Checking $test_name"
 
-    python3 "$SRC_MAIN" < "$input_file" > "$output_file"
+    python3 "$SRC_MAIN" t < "$input_file" > "$output_file"
 
     if [ -f "$expected_file" ]; then
         if diff -q "$output_file" "$expected_file" > /dev/null; then
@@ -42,7 +40,7 @@ do
     fi
 
     echo "----------------------------------"
-done
+done < <(find "$INPUT_DIR" -name "*.txt" -print0)
 
 echo "Total Passed: $PASS_COUNT"
 echo "Total Failed: $FAIL_COUNT"
@@ -52,3 +50,5 @@ if [ "$FAIL_COUNT" -eq 0 ]; then
 else
     echo "Some tests failed."
 fi
+
+read -p "Press any key to terminate."

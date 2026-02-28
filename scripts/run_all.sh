@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 INPUT_DIR="$PROJECT_ROOT/tests/inputs"
@@ -15,9 +14,10 @@ do
     echo "Running $test_name"
     echo "----------------------------------"
 
-    python3 "$SRC_MAIN" < "$input_file"
+    python3 "$SRC_MAIN" t < "$input_file"
 
     echo ""
 done
 
 echo "Finished running all tests."
+read -p "Press any key to terminate."
