@@ -311,7 +311,7 @@ def write_Account_To_File(file, name, balance):
         for line in lines:
             f.write(line)
         f.write(new_line)
-        f.write("!0000 END_OF_FILE\n")
+        f.write("!0000 END_OF_FILE          0 00000000\n")
     return new_id
 
 
