@@ -1,3 +1,14 @@
+ACCOUNTS_PATH = None
+TRANS_OUT_PATH = None
+TEST_MODE = False
+
+def set_runtime_config(accounts_path: str, trans_out_path: str, test_mode: bool):
+    global ACCOUNTS_PATH, TRANS_OUT_PATH, TEST_MODE
+    ACCOUNTS_PATH = accounts_path
+    TRANS_OUT_PATH = trans_out_path
+    TEST_MODE = test_mode
+
+from account_file_ops import delete_account, deactivate_account
 # Later: Create a Backend module called controller
 
 '''
@@ -53,6 +64,10 @@ def format_money(amount: float) -> str:
 
 # This controls the main menu display. Each also returns a choice and mode to the front end to display the right amount.
 def display_main_menu():
+    
+    if TEST_MODE:
+        return 0, "a"
+    
     #Case 1: They are not logged in.
     if not current_session["logged_in"]:
         print("\n<+= Banking System =+>")
@@ -126,7 +141,6 @@ def record_transaction(code: str,
     Creates and stores a properly formatted 40-character transaction line.
     """
 
-    #Calls format functions to properly format string.
     CC = format_numeric(code, 2)
     AAAAA = format_alpha(account_holder, 20)
     NNNNN = format_numeric(account_number, 5)
@@ -134,13 +148,9 @@ def record_transaction(code: str,
     MM = format_alpha(misc, 2)
 
     line = f"{CC} {AAAAA} {NNNNN} {PPPPPPPP} {MM}"
-    print(line)
-    print(len(line))
 
-    # Will be used later to determine if the transactions are properly formatted or not.
-
-    # if len(line) != 40:
-    #     raise ValueError("Transaction line is not 40 characters.")
+    if TEST_MODE:
+        print(line)
 
     session_transactions.append(line)
 
@@ -186,10 +196,10 @@ def handle_logout():
     WRITING TO FILE DOES NOT WORK RIGHT NOW
     '''
     try:
-        with open("./records/bank_transaction_file.txt", "w") as f:
+        out_path = TRANS_OUT_PATH if TRANS_OUT_PATH else "./records/bank_transaction_file.txt"
+        with open(out_path, "w", newline="\n") as f:
             for line in session_transactions:
                 f.write(line + "\n")
-            print("Transactions:", session_transactions)
     except Exception as e:
         return f"Error writing transaction file: {str(e)}"
 
@@ -382,16 +392,8 @@ def handle_delete_account(account_holder: str, account_number: str):
     record_transaction("06", account_holder, account_number)
 
     try:
-        # controller.delete_account(account_holder, account_number)
-        # Backend should:
-        # - Validate holder exists
-        # - Validate account belongs to holder
-        # - Mark account as deleted
-        # - Prevent future transactions
-        # - Save transaction record
-
+        delete_account(ACCOUNTS_PATH, account_holder, account_number)
         return f"Account {account_number} deleted successfully."
-
     except Exception as e:
         return f"Delete failed: {str(e)}"
 
@@ -417,15 +419,8 @@ def handle_disable_account(account_holder: str, account_number: str):
     record_transaction("07", account_holder, account_number)
 
     try:
-        # controller.disable_account(account_holder, account_number)
-        # Backend should:
-        # - Verify account exists
-        # - Verify ownership
-        # - Change status A -> D
-        # - Save transaction
-
+        deactivate_account(ACCOUNTS_PATH, account_holder, account_number)
         return f"Account {account_number} disabled successfully."
-
     except Exception as e:
         return f"Disable failed: {str(e)}"
 
@@ -462,3 +457,5 @@ def handle_change_plan(account_holder: str, account_number: str):
 
     except Exception as e:
         return f"ChangePlan failed: {str(e)}"
+
+#11

@@ -14,15 +14,15 @@ echo "--------------------------------"
 
 find "$INPUT_DIR" -name "*.txt" -print0 | while IFS= read -r -d '' input_file
 do
-    base=$(basename "$input_file" .txt)
+  base=$(basename "$input_file" .txt)
 
-    echo "Running $base"
-    echo "--------------------------------"
+  echo "Running $base"
+  echo "--------------------------------"
 
-    py "$SRC_MAIN" "$ACCOUNTS_FILE" "$OUTPUT_DIR/$base.atf" \
-        < "$input_file" > "$OUTPUT_DIR/$base.out"
+  py "$SRC_MAIN" "$ACCOUNTS_FILE" "$OUTPUT_DIR/$base.atf" -t \
+    < "$input_file" > "$OUTPUT_DIR/$base.txt"
 
-    echo ""
+  echo ""
 done
 
 echo "Finished running all tests."
