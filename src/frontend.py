@@ -264,7 +264,7 @@ def handle_create_account(name: str, initial_balance: float):
     try:
         acc_id = write_Account_To_File('../tests/current_accounts/currentaccounts.txt', name, initial_balance)
 
-        record_transaction("05", name, acc_id, initial_balance) # REPLACE 0 WITH NEW ID
+        record_transaction("05", name, "00000", initial_balance) # REPLACE 0 WITH NEW ID
         
         return f"Account successfully created for {name}."
     except Exception as e:
@@ -296,7 +296,7 @@ def write_Account_To_File(file, name, balance):
             continue
 
     # Pick the lowest unused ID
-    new_id = 0
+    new_id = 1
     while new_id in used_ids:
         new_id += 1
 
