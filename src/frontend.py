@@ -14,6 +14,18 @@ To demonstrate architecture for account operations, we use fictional accounts fo
 The frontend also processes other transactions, such as log-in, logout, and paying bills.
 '''
 
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+ACCOUNTS_FILE = os.path.join(
+    BASE_DIR,
+    "..",
+    "tests",
+    "current_accounts",
+    "currentaccounts.txt"
+)
+
 # IF FILEREADERROR, REPLACE '../tests/current_accounts/currentaccounts.txt' WITH 'tests/current_accounts/currentaccounts.txt'
 
 # SESSION STATE
@@ -264,7 +276,7 @@ def handle_create_account(name: str, initial_balance: float):
         return "Error: Privileged Transaction."
 
     try:
-        acc_id = write_Account_To_File('../tests/current_accounts/currentaccounts.txt', name, initial_balance)
+        acc_id = write_Account_To_File(ACCOUNTS_FILE, name, initial_balance)
 
         record_transaction("05", name, acc_id, initial_balance) # REPLACE 0 WITH NEW ID
         
@@ -325,7 +337,7 @@ def handle_deposit(account_id: str, amount: float):
     """
     global current_session
 
-    balance, account_type = load_accounts_file('../tests/current_accounts/currentaccounts.txt', current_session["account_holder"], account_id)
+    balance, account_type = load_accounts_file(ACCOUNTS_FILE, current_session["account_holder"], account_id)
 
     #Checks if account exists
     if (account_type == "F"):
@@ -356,7 +368,7 @@ def handle_withdraw(account_id: str, amount: float, account_owner: str | None=No
         return f"Error: {amount} exceeds your limit of $500."
     
     #Checks if the amount is less than your equal to your balance (Overdraft)
-    balance, account_type = load_accounts_file('../tests/current_accounts/currentaccounts.txt', account_owner, account_id)
+    balance, account_type = load_accounts_file(ACCOUNTS_FILE, account_owner, account_id)
 
     #Checks if account exists
     if (account_type == "F"):
@@ -382,13 +394,13 @@ def handle_transfer(src_id: str, dest_id: str, amount: float):
     global current_session
 
     #Check you own the source account
-    balance, accountType = load_accounts_file('../tests/current_accounts/currentaccounts.txt', current_session["account_holder"], src_id)
+    balance, accountType = load_accounts_file(ACCOUNTS_FILE, current_session["account_holder"], src_id)
     if (accountType == "F"):
         return "Error: You must own the account you intend to transfer from."
 
     #Check that both accounts exist
-    if not (does_Account_Exist('../tests/current_accounts/currentaccounts.txt', src_id) 
-            or does_Account_Exist('../tests/current_accounts/currentaccounts.txt', dest_id)):
+    if not (does_Account_Exist(ACCOUNTS_FILE, src_id) 
+            or does_Account_Exist(ACCOUNTS_FILE, dest_id)):
             return "Error: One or more accounts do not exist."
     
     #Check the transaction is not greater than $1000

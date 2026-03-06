@@ -2,11 +2,21 @@
 # BACKEND = CONTROLLER
 # -----------------------------
 
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 from read import *
 from write import *
 from print_error import *
 
-ACCOUNTS_FILE = "tests/current_accounts/currentaccounts.txt"
+ACCOUNTS_FILE = os.path.join(
+    BASE_DIR,
+    "..",
+    "tests",
+    "current_accounts",
+    "currentaccounts.txt"
+)
 
 
 # EVERYTHING BEYOND THIS POINT MAY NOT WORK
