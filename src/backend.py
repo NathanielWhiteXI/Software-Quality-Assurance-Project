@@ -15,7 +15,7 @@ ACCOUNTS_FILE = os.path.join(
     "..",
     "tests",
     "current_accounts",
-    "currentaccounts.txt"
+    "masteraccounts.txt"
 )
 
 
