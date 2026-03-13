@@ -1,45 +1,64 @@
 def write_new_current_accounts(accounts, file_path):
     """
-    Writes Current Bank Accounts File with strict validation
-    Format: NNNNN AAAAAAAAAAAAAAAAAAAA S PPPPPPPP TT
-    Where TT is account plan (SP or NP)
+    Writes the Master Bank Accounts File.
+
+    Format:
+    NNNNN AAAAAAAAAAAAAAAAAAAA S PPPPPPPP TTTT
+
+    Constraints:
+    - 42 characters per line
+    - numeric fields zero padded
+    - alphabetic fields space padded
+    - sorted by account number
     """
+
+    # Ensure ascending order
+    accounts = sorted(accounts, key=lambda acc: int(acc['account_number']))
+
     with open(file_path, 'w') as file:
         for acc in accounts:
+
             # Validate account number
-            if not isinstance(acc['account_number'], str) or not acc['account_number'].isdigit():
-                raise ValueError(f"Account number must be numeric string, got {acc['account_number']}")
-            if len(acc['account_number']) > 5:
-                raise ValueError(f"Account number exceeds 5 digits: {acc['account_number']}")
+            acc_num = str(acc['account_number'])
+            if not acc_num.isdigit() or len(acc_num) > 5:
+                raise ValueError(f"Invalid account number: {acc_num}")
 
             # Validate name
-            if len(acc['name']) > 20:
-                raise ValueError(f"Account name exceeds 20 characters: {acc['name']}")
+            name = acc['name']
+            if len(name) > 20:
+                raise ValueError(f"Account name exceeds 20 characters: {name}")
 
             # Validate status
-            if acc['status'] not in ('A', 'D'):
-                raise ValueError(f"Invalid status '{acc['status']}'. Must be 'A' or 'D'")
+            status = acc['status']
+            if status not in ('A', 'D'):
+                raise ValueError(f"Invalid status: {status}")
 
-            # Validate balance with explicit negative check
-            if not isinstance(acc['balance'], (int, float)):
-                raise ValueError(f"Balance must be numeric, got {type(acc['balance'])}")
-            if acc['balance'] < 0:
-                raise ValueError(f"Negative balance detected: {acc['balance']}")
-            if acc['balance'] > 99999.99:
-                raise ValueError(f"Balance exceeds maximum $99999.99: {acc['balance']}")
+            # Validate balance
+            balance = acc['balance']
+            if not isinstance(balance, (int, float)):
+                raise ValueError(f"Balance must be numeric: {balance}")
 
-            # Validate plan type
-            plan = acc.get('plan', 'NP')
-            if plan not in ('SP', 'NP'):
-                raise ValueError(f"Invalid plan type '{plan}'. Must be SP or NP")
+            if balance < 0 or balance > 99999.99:
+                raise ValueError(f"Invalid balance: {balance}")
+
+            # Validate transactions
+            transactions = acc['total_transactions']
+            if not isinstance(transactions, int):
+                raise ValueError(f"Transactions must be integer: {transactions}")
+
+            if transactions < 0 or transactions > 9999:
+                raise ValueError(f"Invalid transaction count: {transactions}")
 
             # Format fields
-            acc_num = acc['account_number'].zfill(5)
-            name = acc['name'].ljust(20)[:20]
-            balance = f"{acc['balance']:08.2f}"
+            acc_num_fmt = acc_num.zfill(5)
+            name_fmt = name.ljust(20)[:20]
+            balance_fmt = f"{balance:08.2f}"
+            trans_fmt = str(transactions).zfill(4)
 
-            # Write line (37 chars + plan type = 39 chars total)
-            file.write(f"{acc_num} {name} {acc['status']} {balance} {plan}\n")
-        
-        # Add END_OF_FILE marker
-        file.write("00000 END_OF_FILE          A 00000.00 NP\n")
+            line = f"{acc_num_fmt} {name_fmt} {status} {balance_fmt} {trans_fmt}"
+
+            # Final safety check
+            if len(line) != 42:
+                raise ValueError(f"Line formatting error: '{line}' length={len(line)}")
+
+            file.write(line + "\n")
