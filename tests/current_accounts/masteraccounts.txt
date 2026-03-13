@@ -1,0 +1,10 @@
+00001 John Smith           A 00150.00 0003
+00002 Alice Johnson        A 00500.00 0012
+00003 Bob Lee              D 00000.00 0000
+00010 Maria Gonzalez       A 02340.50 0045
+00023 David Brown          A 00075.25 0007
+00100 Emily Chen           A 15000.00 0123
+00250 Michael Patel        D 00010.00 0001
+01000 Sarah Williams       A 00200.00 0025
+05000 Daniel Garcia        A 00001.00 0001
+99999 Test Account         D 00000.00 0000

@@ -217,7 +217,3 @@ def get_account(account_number):
 
 def get_all_accounts():
     return load_accounts()
-
-# Testing
-if __name__ == "__main__":
-    get_all_accounts()
