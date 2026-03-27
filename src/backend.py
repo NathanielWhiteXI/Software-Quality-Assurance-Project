@@ -34,8 +34,9 @@ def save_accounts(accounts):
 
 
 def find_account(accounts, account_number):
+    normalized = str(account_number).strip().zfill(5)
     for acc in accounts:
-        if acc["account_number"] == str(int(account_number)):
+        if acc["account_number"] == normalized:
             return acc
     return None
 
