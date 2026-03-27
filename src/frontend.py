@@ -268,7 +268,7 @@ def handle_create_account(name: str, initial_balance: float):
     Returns: Success or error message (str)
 
     Expected backend call:
-        controller.create_account(name, initial_balance)
+        backend.create_account(name, initial_balance)
     """
     global current_session
 
@@ -345,7 +345,7 @@ def handle_deposit(account_id: str, amount: float):
 
     record_transaction("04", "John Doe", account_id, amount) # SWAP JOHN DOE WITH account name from account id
     try:
-        # controller.deposit(account_id, amount)
+        # backend.deposit(account_id, amount)
         return "Deposit successful."
     except Exception as e:
         return f"Deposit failed: {str(e)}"
@@ -379,7 +379,7 @@ def handle_withdraw(account_id: str, amount: float, account_owner: str | None=No
 
     record_transaction("01", account_owner, account_id, amount) # SWAP JOHN DOE WITH account name from account id
     try:
-        # controller.withdraw(account_id, amount)
+        # backend.withdraw(account_id, amount)
         return "Withdrawal successful."
     except Exception as e:
         return f"Withdrawal failed: {str(e)}"
@@ -413,7 +413,7 @@ def handle_transfer(src_id: str, dest_id: str, amount: float):
 
     record_transaction("02", current_session["account_holder"], src_id, amount, str(int(dest_id))) # SWAP JOHN DOE WITH account name from account id
     try:
-        # controller.transfer(src_id, dest_id, amount)
+        # backend.transfer(src_id, dest_id, amount)
         return "Transfer successful."
     except Exception as e:
         return f"Transfer failed: {str(e)}"
@@ -470,7 +470,7 @@ def handle_paybill(account_number: str, company_code: str, amount: float, accoun
         # - Check account exists
         # - Check belongs to account_holder
         # - Check balance >= 0 after withdrawal
-        # controller.pay_bill(account_holder, account_number, company_code, amount)
+        # backend.pay_bill(account_holder, account_number, company_code, amount)
 
         # Update session total (for standard)
         if current_session["mode"] == "standard":
@@ -501,7 +501,7 @@ def handle_view_account(account_id: str):
     Returns: Account details (object) or error message (str)
     """
     try:
-        # account = controller.get_account(account_id)
+        # account = backend.get_account(account_id)
         # return str(account)
         return f"Displaying account details for ID {account_id}"
     except Exception as e:
@@ -515,7 +515,7 @@ def handle_list_accounts():
     Returns: List of accounts (list) or error message (str)
     """
     try:
-        # accounts = controller.get_all_accounts()
+        # accounts = backend.get_all_accounts()
         # return accounts
         return "Listing all accounts..."
     except Exception as e:
@@ -544,7 +544,7 @@ def handle_delete_account(account_holder: str, account_number: str):
     record_transaction("06", account_holder, account_number)
 
     try:
-        # controller.delete_account(account_holder, account_number)
+        # backend.delete_account(account_holder, account_number)
         # Backend should:
         # - Validate holder exists
         # - Validate account belongs to holder
@@ -579,7 +579,7 @@ def handle_disable_account(account_holder: str, account_number: str):
     record_transaction("07", account_holder, account_number)
 
     try:
-        # controller.disable_account(account_holder, account_number)
+        # backend.disable_account(account_holder, account_number)
         # Backend should:
         # - Verify account exists
         # - Verify ownership
@@ -613,7 +613,7 @@ def handle_change_plan(account_holder: str, account_number: str):
     record_transaction("08", account_holder, account_number)
 
     try:
-        # controller.change_plan(account_holder, account_number)
+        # backend.change_plan(account_holder, account_number)
         # Backend should:
         # - Verify account exists
         # - Verify ownership
